@@ -10,8 +10,11 @@ issues, not sure what might be wrong.
 
 Quick start guide:
 
+* Make sure you have a JDK that's at least version 11.
+  * The gradle wrapper being used here only supports JDK versions up to 20.
 * Clone project.
 * cd to new directory.
+* `./gradlew clean dist`
 * `./haproxyssltest -u https://hostname/url_path -t NN` where NN is the
 thread count desired.  Currently defaults to 8 threads.
   * Run without options to see usage.
