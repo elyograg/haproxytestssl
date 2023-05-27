@@ -8,6 +8,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,6 +26,7 @@ public class TestThread extends Thread implements Runnable {
    * as-is for any class.
    */
   private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final AtomicInteger threadCounter = new AtomicInteger();
   private final CloseableHttpClient httpClient;
   private final String url;
 
@@ -41,6 +43,7 @@ public class TestThread extends Thread implements Runnable {
 
   @Override
   public void run() {
+    threadCounter.incrementAndGet();
     for (int i = 0; i < 1000; i++) {
       final long startNanos = System.nanoTime();
       try {
@@ -52,7 +55,7 @@ public class TestThread extends Thread implements Runnable {
       StaticStuff.requestTimes.add((double) TimeUnit.MILLISECONDS
           .convert(System.nanoTime() - startNanos, TimeUnit.NANOSECONDS));
     }
-    log.warn("Thread ending");
+    log.warn("Thread ending, {} left", threadCounter.decrementAndGet());
   }
 
   private String doGet() throws ClientProtocolException, IOException, URISyntaxException {
