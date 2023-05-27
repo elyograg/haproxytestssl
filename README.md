@@ -13,5 +13,6 @@ Quick start guide:
 * Clone project.
 * cd to new directory.
 * `./haproxyssltest -u https://hostname/url_path -t NN` where NN is the
-thread count desired.
+thread count desired.  Currently defaults to 8 threads.
+  * Run without options to see usage.
 
