@@ -1,0 +1,8 @@
+2023-05-26_18:40:29.300 INFO  Passing control to java.
+2023-05-26_18:40:29.303 INFO  JAR_FILE=build/libs/haproxyssltest-all-0.0.1-SNAPSHOT.jar
+2023-05-26_18:40:29.304 INFO  JAVA_BIN=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+2023-05-26_18:40:29.306 INFO  Options given: -u https://admin.elyograg.org/
+18:40:30.128 [main] INFO  o.e.t.h.MainSSLTest Program starting
+18:40:30.465 [Thread-24] INFO  o.e.t.h.TestThread Accessing https://admin.elyograg.org/
+18:40:30.479 [Thread-24] ERROR o.e.t.h.TestThread Curl exit code 3
+18:40:30.479 [Thread-24] INFO  o.e.t.h.TestThread Output: 

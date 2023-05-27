@@ -1,0 +1,58 @@
+plugins {
+  id 'java'
+}
+
+group = 'org.elyograg.test.haproxy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  // Easy commandline handling.
+  implementation group: 'info.picocli', name: 'picocli', version: '4+'
+  implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+  
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4+'
+  implementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4+'
+  
+  // Logging destination.  Logback automatically includes slf4j-api.
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1+'
+
+  // Shim classes that redirect other logging methods to slf4j.
+  implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: '2+'
+  implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: '2+'
+  implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: '2+'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2+'
+
+  // The test framework.  Specifying with testImplementation excludes it from the final jar.
+  testImplementation('junit:junit:4+')
+}
+
+configurations.all {
+  // Globally exclude common transitive logging destination dependencies.
+  exclude group: 'commons-logging'
+  exclude group: 'log4j'
+  exclude group: 'org.apache.logging.log4j'
+  // An example of excluding something else.
+  //exclude group: 'org.apache.httpcomponents'
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+task dist(type: Jar) {
+  archiveBaseName = project.name + '-all'
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  manifest {
+    attributes 'Implementation-Title': 'Haproxy SSL test',
+      'Implementation-Version': version,
+      'Main-Class': 'org.elyograg.test.haproxy.MainSSLTest',
+      'Multi-Release': 'true'
+  }
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  with jar
+}
