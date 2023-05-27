@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +40,8 @@ public final class StaticStuff {
   public static final List<Double> requestTimes = Collections.synchronizedList(new ArrayList<>());
   public static final AtomicInteger requestCounter = new AtomicInteger();
 
-  private static int animCount = 0;
-  private static long animCheck = 0;
+  private static AtomicInteger animCount = new AtomicInteger();
+  private static AtomicLong animCheck = new AtomicLong();
   private static String lastLine = "";
 
   public static void sleep(final long duration, final TimeUnit unit) {
@@ -169,8 +170,8 @@ public final class StaticStuff {
   }
 
   public static void animate(final String line, final int skip) {
-    if (animCheck % skip == 0) {
-      switch (animCount) {
+    if (animCheck.get() % skip == 0) {
+      switch (animCount.get()) {
       case 1:
         print("[ \\ ] " + line);
         break;
@@ -181,14 +182,14 @@ public final class StaticStuff {
         print("[ / ] " + line);
         break;
       default:
-        animCount = 0;
+        animCount.set(0);
         print("[ - ] " + line);
       }
-      animCount++;
+      animCount.incrementAndGet();
     }
-    animCheck++;
-    if (animCheck == Long.MAX_VALUE) {
-      animCheck = 0;
+    animCheck.incrementAndGet();
+    if (animCheck.get() == Long.MAX_VALUE) {
+      animCheck.set(0);
     }
   }
 
@@ -200,5 +201,4 @@ public final class StaticStuff {
     log.info("Exiting program, code {}", code);
     System.exit(code);
   }
-
 }
