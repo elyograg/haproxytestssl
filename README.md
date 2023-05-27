@@ -8,6 +8,8 @@ This has been shown to have performance woes for very busy websites.
 So far this program hasn't been able to illustrate these performance
 issues, not sure what might be wrong.
 
+Consider this licensed under the Apache License version 2.
+
 Quick start guide:
 
 * Make sure you have a JDK that's at least version 11.
