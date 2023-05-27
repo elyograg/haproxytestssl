@@ -20,6 +20,6 @@ Quick start guide:
 * cd to new directory.
 * `./gradlew clean dist`
 * `./haproxytestssl -u https://hostname/url_path -t NN` where NN is the
-thread count desired.  Currently defaults to 8 threads.
+thread count desired.
   * Run without options to see usage.
 
