@@ -19,7 +19,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ScopeType;
 
-@Command(name = "haproxyssltest", sortOptions = false, scope = ScopeType.INHERIT, description = ""
+@Command(name = "haproxytestssl", sortOptions = false, scope = ScopeType.INHERIT, description = ""
     + "A program to pound haproxy with SSL requests", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
 public final class MainSSLTest implements Runnable {
   /**

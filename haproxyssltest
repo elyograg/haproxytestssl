@@ -3,7 +3,7 @@
 #-- set SCRIPT_DEBUG to get debug messages.
 REQUIRED_PROGS=(which date dirname basename mktemp)
 MINIMUM_JAVA_MAJOR_VERSION="11"
-JAR_WILDCARD="haproxyssltest*.jar"
+JAR_WILDCARD="haproxytestssl*.jar"
 # changeme: The heap size may need adjustment.
 LOCAL_HEAP="256m"
 GC_TUNE=("-XX:+UnlockExperimentalVMOptions" "-XX:+UseZGC")
