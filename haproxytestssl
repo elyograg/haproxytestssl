@@ -212,10 +212,10 @@ if [ "${RET}" -ne 0 ] && [ "${RET}" -ne 2 ]; then
 fi
 
 # Run the application for real with all the options given to this script.
-log_info "Passing control to java."
 log_info "JAR_FILE=${JAR_FILE}"
 log_info "JAVA_BIN=${JAVA_BIN}"
 log_info "Options given: $*"
+log_info "Passing control to java."
 "${JAVA_BIN}" "${GC_TUNE[@]}" "-Xmx${LOCAL_HEAP}" -jar "${JAR_FILE}" "$@"
 RET="$?"
 
