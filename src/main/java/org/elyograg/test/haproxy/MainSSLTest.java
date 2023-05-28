@@ -20,7 +20,9 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.ScopeType;
 
 @Command(name = "haproxytestssl", sortOptions = false, scope = ScopeType.INHERIT, description = ""
-    + "A program to pound haproxy with SSL requests", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
+    + "A program to pound a webserver with requests. "
+    + "Each thread will ask for the indicated URL 1000 times. "
+    + "The original intent was SSL testing, but it will use any valid URL.", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
 public final class MainSSLTest implements Runnable {
   /**
    * A logger object. Gets the fully qualified class name so this can be used
@@ -47,8 +49,9 @@ public final class MainSSLTest implements Runnable {
   private static RequiredOpts requiredOpts;
 
   private static final class RequiredOpts {
-    @Option(names = { "-u", "--url" }, arity = "0", scope = ScopeType.INHERIT, description = ""
-        + "The URL to test.")
+    @Option(names = { "-u",
+        "--url" }, arity = "1", paramLabel = "\"<url>\"", scope = ScopeType.INHERIT, description = ""
+            + "The URL to test. Wrapping the URL in quotes is a good idea.")
     private static String url;
 
     /** A hidden --exit option used by the shell script. */
