@@ -96,7 +96,7 @@ public final class MainSSLTest implements Runnable {
       StaticStuff.exitProgram(1);
     }
 
-    final CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(1024).build();
+    final CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(MAX_THREAD_COUNT).build();
 
     final long startNanos = System.nanoTime();
     final Set<Thread> threads = Collections.synchronizedSet(new HashSet<>());

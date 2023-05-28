@@ -154,7 +154,7 @@ public final class StaticStuff {
     };
   }
 
-  private static void print(final String line) {
+  private static final void printErr(final String line) {
     // clear the last line if longer
     if (lastLine.length() > line.length()) {
       String temp = "";
@@ -169,21 +169,21 @@ public final class StaticStuff {
     lastLine = line;
   }
 
-  public static synchronized void animate(final String line, final int skip) {
+  public static final void animate(final String line, final int skip) {
     if (animCheck.get() % skip == 0) {
       switch (animCount.get()) {
       case 1:
-        print("[ \\ ] " + line);
+        printErr("[ \\ ] " + line);
         break;
       case 2:
-        print("[ | ] " + line);
+        printErr("[ | ] " + line);
         break;
       case 3:
-        print("[ / ] " + line);
+        printErr("[ / ] " + line);
         break;
       default:
         animCount.set(0);
-        print("[ - ] " + line);
+        printErr("[ - ] " + line);
       }
       animCount.incrementAndGet();
     }
