@@ -1,9 +1,6 @@
 package org.elyograg.test.haproxy;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -82,39 +79,5 @@ public class TestThread extends Thread implements Runnable {
         StaticStuff.requestCounter.incrementAndGet());
     StaticStuff.animate(output, 10);
     return responseBody;
-  }
-
-  @SuppressWarnings("unused")
-  private String doCurl() {
-    final Runtime runtime = Runtime.getRuntime();
-    Process process;
-
-    try {
-      final String[] args = { "curl", "-s", "-f", "--http2-prior-knowledge", url };
-      process = runtime.exec(args);
-
-      try (final InputStream is = process.getInputStream();
-          final InputStreamReader isr = new InputStreamReader(is);
-          final BufferedReader br = new BufferedReader(isr);) {
-        String line;
-        final StringBuffer sb = new StringBuffer(4096);
-
-        final int exit = process.waitFor();
-        if (exit == 0) {
-          while ((line = br.readLine()) != null) {
-            sb.append(line);
-            sb.append("\n");
-          }
-          final String output = String.format("Accessed count %s   ",
-              StaticStuff.requestCounter.incrementAndGet());
-          StaticStuff.animate(output, 10);
-        } else {
-          log.error("Curl exit code {}", exit);
-        }
-        return sb.toString();
-      }
-    } catch (final Exception e) {
-      throw new RuntimeException("Error running curl", e);
-    }
   }
 }
