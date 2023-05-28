@@ -22,7 +22,7 @@ import picocli.CommandLine.ScopeType;
 @Command(name = "haproxytestssl", sortOptions = false, scope = ScopeType.INHERIT, description = ""
     + "A program to pound a webserver with requests. "
     + "Each thread will ask for the indicated URL 1000 times. "
-    + "The original intent was SSL testing, but it will use any valid URL. "
+    + "The original intent was SSL testing, " + "but it will use any valid URL. "
     + "At the moment this only supports HTTP/1.1.", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
 public final class MainSSLTest implements Runnable {
   /**
@@ -30,6 +30,7 @@ public final class MainSSLTest implements Runnable {
    * as-is for any class.
    */
   private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final int MAX_THREAD_COUNT = 1024;
 
   /** Help option. */
   @Option(names = { "-h", "--help",
@@ -45,7 +46,8 @@ public final class MainSSLTest implements Runnable {
 
   /** Keepalive option. */
   @Option(names = { "-k", "--keep-alive" }, arity = "0", scope = ScopeType.INHERIT, description = ""
-      + "Enable HTTP keepalive.")
+      + "Enable HTTP keepalive. " + "Don't enable this if you're wanting to simulate "
+      + "a lot of users hitting the website at once.")
   private static boolean keepalive;
 
   /**
@@ -67,10 +69,10 @@ public final class MainSSLTest implements Runnable {
     private static boolean exitFlag;
   }
 
-  /** Optional option. */
+  /** Thread count. */
   @Option(names = { "-t",
       "--thread-count" }, arity = "1", defaultValue = "8", scope = ScopeType.INHERIT, description = ""
-          + "The number of threads to run. Default '${DEFAULT-VALUE}'")
+          + "The number of threads to run. Default '${DEFAULT-VALUE}'.  Max is " + MAX_THREAD_COUNT)
   private static int threadCount;
 
   public static final void main(final String[] args) {
@@ -88,7 +90,13 @@ public final class MainSSLTest implements Runnable {
       StaticStuff.exitProgram();
     }
 
-    final CloseableHttpClient client = HttpClients.custom().build();
+    if (threadCount > MAX_THREAD_COUNT) {
+      log.error("Indicated thread count {} is larger than the max count, {}", threadCount,
+          MAX_THREAD_COUNT);
+      StaticStuff.exitProgram(1);
+    }
+
+    final CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(1024).build();
 
     final long startNanos = System.nanoTime();
     final Set<Thread> threads = Collections.synchronizedSet(new HashSet<>());
