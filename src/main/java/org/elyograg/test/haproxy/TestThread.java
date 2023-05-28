@@ -26,16 +26,20 @@ public class TestThread extends Thread implements Runnable {
   private static final AtomicInteger threadCounter = new AtomicInteger();
   private final CloseableHttpClient httpClient;
   private final String url;
+  private final boolean keepalive;
 
   /**
    * Constructor.
    * 
-   * @param testUrl The URL to test.
-   * @param hc      the http client to use.
+   * @param testUrl
+   * @param hc
+   * @param keepaliveParam
    */
-  public TestThread(final String testUrl, final CloseableHttpClient hc) {
+  public TestThread(final String testUrl, final CloseableHttpClient hc,
+      final boolean keepaliveParam) {
     httpClient = hc;
     url = testUrl;
+    keepalive = keepaliveParam;
   }
 
   @Override
@@ -59,8 +63,9 @@ public class TestThread extends Thread implements Runnable {
     final URI uri = new URIBuilder(url).build();
 
     final HttpGet httpGet = new HttpGet(uri);
-    httpGet.addHeader("Connection", "close");
-    // httpMethod.setRequestHeader("Connection", "close")
+    if (!keepalive) {
+      httpGet.addHeader("Connection", "close");
+    }
 
     final HttpResponse response = httpClient.execute(httpGet);
     final HttpEntity entity = response.getEntity();

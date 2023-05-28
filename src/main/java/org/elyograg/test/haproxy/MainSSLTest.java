@@ -22,7 +22,8 @@ import picocli.CommandLine.ScopeType;
 @Command(name = "haproxytestssl", sortOptions = false, scope = ScopeType.INHERIT, description = ""
     + "A program to pound a webserver with requests. "
     + "Each thread will ask for the indicated URL 1000 times. "
-    + "The original intent was SSL testing, but it will use any valid URL.", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
+    + "The original intent was SSL testing, but it will use any valid URL. "
+    + "At the moment this only supports HTTP/1.1.", footer = StaticStuff.USAGE_OPTION_SEPARATOR_TEXT)
 public final class MainSSLTest implements Runnable {
   /**
    * A logger object. Gets the fully qualified class name so this can be used
@@ -41,6 +42,11 @@ public final class MainSSLTest implements Runnable {
       "--debug" }, arity = "0", scope = ScopeType.INHERIT, description = ""
           + "Log any available debug messages.")
   private static boolean verbose;
+
+  /** Keepalive option. */
+  @Option(names = { "-k", "--keep-alive" }, arity = "0", scope = ScopeType.INHERIT, description = ""
+      + "Enable HTTP keepalive.")
+  private static boolean keepalive;
 
   /**
    * An argument group in which one of the options is required.
@@ -87,7 +93,7 @@ public final class MainSSLTest implements Runnable {
     final long startNanos = System.nanoTime();
     final Set<Thread> threads = Collections.synchronizedSet(new HashSet<>());
     for (int i = 0; i < threadCount; i++) {
-      final Thread t = new TestThread(RequiredOpts.url, client);
+      final Thread t = new TestThread(RequiredOpts.url, client, keepalive);
       t.start();
       threads.add(t);
     }
