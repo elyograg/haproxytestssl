@@ -43,7 +43,7 @@ public class TestThread extends Thread implements Runnable {
 
   @Override
   public void run() {
-    threadCounter.incrementAndGet();
+    this.setName(String.format("test_thread_%s", threadCounter.incrementAndGet()));
     for (int i = 0; i < 1000; i++) {
       final long startNanos = System.nanoTime();
       try {
