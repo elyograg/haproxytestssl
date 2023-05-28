@@ -171,19 +171,21 @@ public final class StaticStuff {
 
   public static final void animate(final String line, final int skip) {
     if (animCheck.get() % skip == 0) {
-      switch (animCount.get()) {
-      case 1:
-        printErr("[ \\ ] " + line);
-        break;
-      case 2:
-        printErr("[ | ] " + line);
-        break;
-      case 3:
-        printErr("[ / ] " + line);
-        break;
-      default:
-        animCount.set(0);
-        printErr("[ - ] " + line);
+      synchronized (log) {
+        switch (animCount.get()) {
+        case 1:
+          printErr("[ \\ ] " + line);
+          break;
+        case 2:
+          printErr("[ | ] " + line);
+          break;
+        case 3:
+          printErr("[ / ] " + line);
+          break;
+        default:
+          animCount.set(0);
+          printErr("[ - ] " + line);
+        }
       }
       animCount.incrementAndGet();
     }
