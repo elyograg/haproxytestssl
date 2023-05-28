@@ -169,7 +169,7 @@ public final class StaticStuff {
     lastLine = line;
   }
 
-  public static void animate(final String line, final int skip) {
+  public static synchronized void animate(final String line, final int skip) {
     if (animCheck.get() % skip == 0) {
       switch (animCount.get()) {
       case 1:
