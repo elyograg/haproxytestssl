@@ -62,7 +62,7 @@ public final class MainSSLTest implements Runnable {
             + "The URL to test. Wrapping the URL in quotes is a good idea.")
     private static String url;
 
-    /** A hidden --exit option used by the shell script. */
+    /** A hidden --exit option. Useful for making sure the program will run. */
     @Option(names = {
         "--exit" }, arity = "0", hidden = true, scope = ScopeType.INHERIT, description = ""
             + "Exit the program as soon as it starts.")
@@ -71,7 +71,7 @@ public final class MainSSLTest implements Runnable {
 
   /** Thread count. */
   @Option(names = { "-t",
-      "--thread-count" }, arity = "1", defaultValue = "8", scope = ScopeType.INHERIT, description = ""
+      "--thread-count" }, arity = "1", defaultValue = "24", scope = ScopeType.INHERIT, description = ""
           + "The number of threads to run. Default '${DEFAULT-VALUE}'.  Max is " + MAX_THREAD_COUNT)
   private static int threadCount;
 
@@ -96,7 +96,8 @@ public final class MainSSLTest implements Runnable {
       StaticStuff.exitProgram(1);
     }
 
-    final CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(MAX_THREAD_COUNT).build();
+    final CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(MAX_THREAD_COUNT)
+        .build();
 
     final long startNanos = System.nanoTime();
     final Set<Thread> threads = Collections.synchronizedSet(new HashSet<>());
