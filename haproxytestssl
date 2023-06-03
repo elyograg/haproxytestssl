@@ -176,10 +176,10 @@ cd "${SCRIPT_DIR}" || die "Can't cd to script directory ${SCRIPT_DIR}"
 # shellcheck disable=SC2086
 if [ -r build/libs/${JAR_WILDCARD} ]; then
 # shellcheck disable=SC2086
-  JAR_FILE="$(echo build/libs/${JAR_WILDCARD} | head -n1)"
+  JAR_FILE="$(echo build/libs/${JAR_WILDCARD} | tail -n1)"
 elif [ -r ${JAR_WILDCARD} ]; then
 # shellcheck disable=SC2086
-  JAR_FILE="$(echo ${JAR_WILDCARD} | head -n1)"
+  JAR_FILE="$(echo ${JAR_WILDCARD} | tail -n1)"
 else
   die "Unable to find jar!"
 fi
